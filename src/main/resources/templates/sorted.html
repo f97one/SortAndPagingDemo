@@ -49,7 +49,7 @@
         <ul class="pagination">
             <!-- 先頭アイテム -->
             <li class="page-item">
-                <span class="page-link disabled bg-dark" th:if="${page.first}">&laquo;</span>
+                <span class="page-link disabled" style="background-color: silver;" th:if="${page.first}">&laquo;</span>
                 <a href="#" class="page-link" aria-label="先頭へ" th:classappend="|${page.first ? 'disabled' : ''}|"
                    th:unless="${page.first}" th:href="@{${url}(page=0,cityCode=${condition.cityCode},cityName=${condition.cityName})}">
                     <span aria-hidden="true">&laquo;</span>
@@ -59,7 +59,7 @@
 
             <!-- 前ページへ -->
             <li class="page-item">
-                <span class="page-link disabled bg-dark" th:unless="${page.previous}">&lang;</span>
+                <span class="page-link disabled" style="background-color: silver;" th:unless="${page.previous}">&lang;</span>
                 <a href="#" class="page-link" aria-label="前へ" th:classappend="|${page.previous ? '' : 'disabled'}|"
                    th:if="${page.previous}" th:href="@{${url}(page=(${page.number}-1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
                     <span aria-hidden="true">&lang;</span>
@@ -69,16 +69,16 @@
 
             <!-- 中のアイテム -->
             <li class="page-item" th:each='i : ${#numbers.sequence(0, page.totalPages-1)}'>
-                <span class="page-link disabled" th:if='${i} eq ${page.number}' th:text='${i+1}'>1</span>
+                <span class="page-link disabled bg-primary text-white" th:if='${i} eq ${page.number}' th:text='${i+1}'>1</span>
                 <a href="#" class="page-link"
-                   th:unless='(${i} eq 0) and (${i} eq ${page.number})' th:href="@{${url}(page=${i},cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                   th:unless='(${i} eq ${page.number})' th:href="@{${url}(page=${i},cityCode=${condition.cityCode},cityName=${condition.cityName})}">
                     <span th:text='${i+1}'>1</span>
                 </a>
             </li>
 
             <!-- 次のアイテム -->
             <li class="page-item">
-                <span class="page-link disabled bg-dark" th:unless="${page.next}">&rang;</span>
+                <span class="page-link disabled" style="background-color: silver;" th:unless="${page.next}">&rang;</span>
                 <a href="#" class="page-link" th:classappend="|${page.next ? '' : 'disabled'}|"
                    th:if="${page.next}" th:href="@{${url}(page=(${page.number}+1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
                     <span aria-hidden="true">&rang;</span>
@@ -88,7 +88,7 @@
 
             <!-- 最後尾アイテム -->
             <li class="page-item">
-                <span class="page-link disabled bg-dark" th:if="${page.last}">&raquo;</span>
+                <span class="page-link disabled" style="background-color: silver;" th:if="${page.last}">&raquo;</span>
                 <a href="#" class="page-link" aria-label="最後尾へ" th:classappend="|${page.last ? 'disabled' : ''}|"
                    th:unless="${page.last}" th:href="@{${url}(page=(${page.totalPages}-1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
                     <span aria-hidden="true">&raquo;</span>
