@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous" />
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm 49" crossorigin =" anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container">
+    <form action="#" method="post" th:action="@{/search}">
+        <div class="row">
+            <div class="col-lg-2">団体コード</div>
+            <div class="col-lg-4">
+                <input type="text" class="form-control form-inline" id="cityCode" th:field="${condition.cityCode}" />
+            </div>
+            <div class="col-lg-2">市区町村名</div>
+            <div class="col-lg-4">
+                <input type="text" class="form-control form-inline" id="cityName" th:field="${condition.cityName}" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2">
+                <input type="submit" id="searchBtn" value="検索" class="btn btn-primary btn-block" />
+            </div>
+        </div>
+    </form>
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th class="text-center">団体コード</th>
+            <th class="text-center">都道府県名</th>
+            <th class="text-center">市区町村名</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="city : ${cityList}">
+            <td th:text="${city.cityCode}">33202</td>
+            <td th:text="${city.pref.prefName}">岡山県</td>
+            <td th:text="${city.cityName}">倉敷市</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <ul class="pagination">
+            <!-- 先頭アイテム -->
+            <!-- todo 有効無効の処理を入れる -->
+            <li class="page-item">
+                <span class="page-link disabled" th:if="${page.first}">&laquo;</span>
+                <a href="#" class="page-link" aria-label="前へ"
+                   th:unless="${page.first}" th:href="@{${url}(page=0,cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                    <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">前へ</span>
+                </a>
+            </li>
+
+            <!-- todo 中のアイテムを書く -->
+            <li class="page-item" th:each='i : ${#numbers.sequence(0, page.totalPages-1)}'>
+                <span class="page-link disabled" th:if='${i} == ${page.number}' th:text='${i+1}'>1</span>
+                <a href="#" class="page-link"
+                   th:unless='${i} == ${page.number}' th:href="@{${url}(page=${i},cityCode=${condition.cityCode},cityName=${condition.cityName})}"><span th:text='${i+1}'>1</span></a>
+            </li>
+
+            <!-- 最後尾アイテム -->
+            <!-- todo 有効無効の処理を入れる -->
+            <li class="page-item">
+                <span class="page-link disabled" th:if="${page.last}">&raquo;</span>
+                <a href="#" class="page-link" aria-label="後へ"
+                   th:unless="${page.last}" th:href="@{${url}(page=(${page.totalPages}-1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                    <span aria-hidden="true">&raquo;</span>
+                    <span class="sr-only">後へ</span>
+                </a>
+            </li>
+        </ul>
+        <div>Total : <span th:text="${page.totalElements}">10</span> record(s)</div>
+    </div>
+</div>
+</body>
+</html>
