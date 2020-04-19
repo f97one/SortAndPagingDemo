@@ -10,4 +10,6 @@ class Pagination<T>(page: Page<T>) {
     val numberOfElements: Int = page.numberOfElements
     val totalElements: Long = page.totalElements
     val totalPages: Int = page.totalPages
+    val next: Boolean = page.hasNext()
+    val previous: Boolean = page.hasPrevious()
 }

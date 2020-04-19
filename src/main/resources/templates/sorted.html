@@ -48,31 +48,51 @@
     <div class="row">
         <ul class="pagination">
             <!-- 先頭アイテム -->
-            <!-- todo 有効無効の処理を入れる -->
             <li class="page-item">
-                <span class="page-link disabled" th:if="${page.first}">&laquo;</span>
-                <a href="#" class="page-link" aria-label="前へ"
+                <span class="page-link disabled bg-dark" th:if="${page.first}">&laquo;</span>
+                <a href="#" class="page-link" aria-label="先頭へ" th:classappend="|${page.first ? 'disabled' : ''}|"
                    th:unless="${page.first}" th:href="@{${url}(page=0,cityCode=${condition.cityCode},cityName=${condition.cityName})}">
                     <span aria-hidden="true">&laquo;</span>
+                    <span class="sr-only">先頭へ</span>
+                </a>
+            </li>
+
+            <!-- 前ページへ -->
+            <li class="page-item">
+                <span class="page-link disabled bg-dark" th:unless="${page.previous}">&lang;</span>
+                <a href="#" class="page-link" aria-label="前へ" th:classappend="|${page.previous ? '' : 'disabled'}|"
+                   th:if="${page.previous}" th:href="@{${url}(page=(${page.number}-1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                    <span aria-hidden="true">&lang;</span>
                     <span class="sr-only">前へ</span>
                 </a>
             </li>
 
-            <!-- todo 中のアイテムを書く -->
+            <!-- 中のアイテム -->
             <li class="page-item" th:each='i : ${#numbers.sequence(0, page.totalPages-1)}'>
                 <span class="page-link disabled" th:if='${i} eq ${page.number}' th:text='${i+1}'>1</span>
                 <a href="#" class="page-link"
-                   th:unless='(${i} eq 0) and (${i} eq ${page.number})' th:href="@{${url}(page=${i},cityCode=${condition.cityCode},cityName=${condition.cityName})}"><span th:text='${i+1}'>1</span></a>
+                   th:unless='(${i} eq 0) and (${i} eq ${page.number})' th:href="@{${url}(page=${i},cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                    <span th:text='${i+1}'>1</span>
+                </a>
+            </li>
+
+            <!-- 次のアイテム -->
+            <li class="page-item">
+                <span class="page-link disabled bg-dark" th:unless="${page.next}">&rang;</span>
+                <a href="#" class="page-link" th:classappend="|${page.next ? '' : 'disabled'}|"
+                   th:if="${page.next}" th:href="@{${url}(page=(${page.number}+1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                    <span aria-hidden="true">&rang;</span>
+                    <span class="sr-only">次へ</span>
+                </a>
             </li>
 
             <!-- 最後尾アイテム -->
-            <!-- todo 有効無効の処理を入れる -->
             <li class="page-item">
-                <span class="page-link disabled" th:if="${page.last}">&raquo;</span>
-                <a href="#" class="page-link" aria-label="後へ"
+                <span class="page-link disabled bg-dark" th:if="${page.last}">&raquo;</span>
+                <a href="#" class="page-link" aria-label="最後尾へ" th:classappend="|${page.last ? 'disabled' : ''}|"
                    th:unless="${page.last}" th:href="@{${url}(page=(${page.totalPages}-1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
                     <span aria-hidden="true">&raquo;</span>
-                    <span class="sr-only">後へ</span>
+                    <span class="sr-only">最後尾へ</span>
                 </a>
             </li>
         </ul>
