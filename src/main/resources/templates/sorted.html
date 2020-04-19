@@ -60,9 +60,9 @@
 
             <!-- todo 中のアイテムを書く -->
             <li class="page-item" th:each='i : ${#numbers.sequence(0, page.totalPages-1)}'>
-                <span class="page-link disabled" th:if='${i} == ${page.number}' th:text='${i+1}'>1</span>
+                <span class="page-link disabled" th:if='${i} eq ${page.number}' th:text='${i+1}'>1</span>
                 <a href="#" class="page-link"
-                   th:unless='${i} == ${page.number}' th:href="@{${url}(page=${i},cityCode=${condition.cityCode},cityName=${condition.cityName})}"><span th:text='${i+1}'>1</span></a>
+                   th:unless='(${i} eq 0) and (${i} eq ${page.number})' th:href="@{${url}(page=${i},cityCode=${condition.cityCode},cityName=${condition.cityName})}"><span th:text='${i+1}'>1</span></a>
             </li>
 
             <!-- 最後尾アイテム -->
