@@ -27,13 +27,43 @@
                 <input type="submit" id="searchBtn" value="検索" class="btn btn-primary btn-block" />
             </div>
         </div>
+        <input type="hidden" th:value="${sortItem}" />
+        <input type="hidden" th:value="${direction}" />
+        <input type="hidden" th:value="${sortDirection}" />
     </form>
     <table class="table table-bordered">
         <thead>
         <tr>
-            <th class="text-center">団体コード</th>
-            <th class="text-center">都道府県名</th>
-            <th class="text-center">市区町村名</th>
+            <th class="text-center">
+                <a href="#" th:if="${sortItem} eq 'cityCode'"
+                   th:href="@{${url}(page=(${page.number} - 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem='cityCode', direction=${direction})}">
+                    団体コード<span th:if="${sortItem} eq 'cityCode'"><span th:if="${direction} eq 'ASC'">▽</span><span th:if="${direction} eq 'DESC'">△</span></span>
+                </a>
+                <a href="#" th:unless="${sortItem} eq 'cityCode'"
+                   th:href="@{${url}(page=(${page.number} - 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem='cityCode', direction='ASC')}">
+                    団体コード
+                </a>
+            </th>
+            <th class="text-center">
+                <a href="#" th:if="${sortItem} eq 'prefName'"
+                   th:href="@{${url}(page=(${page.number} - 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem='prefName', direction=${direction})}">
+                    都道府県名<span th:if="${sortItem} eq 'prefName'"><span th:if="${direction} eq 'ASC'">▽</span><span th:if="${direction} eq 'DESC'">△</span></span>
+                </a>
+                <a href="#" th:unless="${sortItem} eq 'prefName'"
+                   th:href="@{${url}(page=(${page.number} - 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem='prefName', direction='ASC')}">
+                    都道府県名
+                </a>
+            </th>
+            <th class="text-center">
+                <a href="#" th:if="${sortItem} eq 'cityName'"
+                   th:href="@{${url}(page=(${page.number} - 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem='cityName', direction=${direction})}">
+                    市区町村名<span th:if="${sortItem} eq 'cityName'"><span th:if="${direction} eq 'ASC'">▽</span><span th:if="${direction} eq 'DESC'">△</span></span>
+                </a>
+                <a href="#" th:unless="${sortItem} eq 'cityName'"
+                   th:href="@{${url}(page=(${page.number} - 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem='cityName', direction=${direction})}">
+                    市区町村名
+                </a>
+            </th>
         </tr>
         </thead>
         <tbody>
@@ -51,7 +81,7 @@
                 <!-- 先頭アイテム -->
                 <li class="page-item" th:classappend="|${page.first ? 'disabled' : ''}|">
                     <a href="#" class="page-link" aria-label="先頭へ"
-                       th:href="@{${url}(page=0,cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                       th:href="@{${url}(page=0, cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem=${sortItem}, direction=${sortDirection})}">
                         <span aria-hidden="true">&laquo;</span>
                         <span class="sr-only">先頭へ</span>
                     </a>
@@ -60,7 +90,7 @@
                 <!-- 前ページへ -->
                 <li class="page-item" th:classappend="|${page.previous ? '' : 'disabled'}|">
                     <a href="#" class="page-link" aria-label="前へ"
-                       th:href="@{${url}(page=(${page.number}-1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                       th:href="@{${url}(page=(${page.number} - 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem=${sortItem}, direction=${sortDirection})}">
                         <span aria-hidden="true">&lt;</span>
                         <span class="sr-only">前へ</span>
                     </a>
@@ -69,9 +99,9 @@
                 <!-- 中のアイテム -->
                 <!-- 7項目だけ出す -->
                 <li class="page-item" th:class="|page-item ${(page.number eq i) ? 'active' : ''}|"
-                    th:each='i : ${#numbers.sequence((s < 0 ? 0 : s), ((s < 0 ? 0 : s) + 6) > (page.totalPages - 1) ? (page.totalPages - 1) : ((s < 0 ? 0 : s) + 6))}'>
+                    th:each="i : ${#numbers.sequence((s < 0 ? 0 : s), ((s < 0 ? 0 : s) + 6) > (page.totalPages - 1) ? (page.totalPages - 1) : ((s < 0 ? 0 : s) + 6))}">
                     <a href="#" class="page-link"
-                       th:href="@{${url}(page=${i},cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                       th:href="@{${url}(page=${i}, cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem=${sortItem}, direction=${sortDirection})}">
                         <span th:text='${i + 1}'>1</span>
                     </a>
                 </li>
@@ -79,7 +109,7 @@
                 <!-- 次のアイテム -->
                 <li class="page-item" th:classappend="|${page.next ? '' : 'disabled'}|">
                     <a href="#" class="page-link"
-                       th:href="@{${url}(page=(${page.number}+1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                       th:href="@{${url}(page=(${page.number} + 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem=${sortItem}, direction=${sortDirection})}">
                         <span aria-hidden="true">&gt;</span>
                         <span class="sr-only">次へ</span>
                     </a>
@@ -88,7 +118,7 @@
                 <!-- 最後尾アイテム -->
                 <li class="page-item" th:classappend="|${page.last ? 'disabled' : ''}|">
                     <a href="#" class="page-link" aria-label="最後尾へ"
-                       th:href="@{${url}(page=(${page.totalPages}-1),cityCode=${condition.cityCode},cityName=${condition.cityName})}">
+                       th:href="@{${url}(page=(${page.totalPages} - 1), cityCode=${condition.cityCode}, cityName=${condition.cityName}, sortItem=${sortItem}, direction=${sortDirection})}">
                         <span aria-hidden="true">&raquo;</span>
                         <span class="sr-only">最後尾へ</span>
                     </a>
