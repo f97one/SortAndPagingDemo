@@ -10,5 +10,5 @@ data class Prefecture(
         @Column(name = "pref_id", length = 2)
         var prefId: String,
         @Column(name = "pref_name", length = 10)
-        var PrefName: String?) {
+        var prefName: String?) {
 }
